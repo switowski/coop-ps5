@@ -94,6 +94,11 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:6px}
 .lb-thumbs img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;opacity:.5;cursor:pointer;border:2px solid transparent}
 .lb-thumbs img.on{opacity:1;border-color:var(--accent)}
 @media (max-width:600px){.lb button{width:40px;height:40px;font-size:18px}.lb-stage{gap:6px}}
+/* Komentarze */
+.notes{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.notes h3{font-size:17px}
+.note{margin:0;background:#3a300f;border:1px solid #7a6420;color:#fbeec4;border-radius:10px;padding:10px 14px}
+.note strong{color:var(--love)}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 </head>
@@ -157,7 +162,7 @@ const GAMES = [
     ceneo:"Brak wersji PS5 na Ceneo; PS4 (bez Repentance+) od 215 zł",
     mcUrl:"https://www.metacritic.com/game/the-binding-of-isaac-repentance/", ocUrl:"https://opencritic.com/game/11065/the-binding-of-isaac-repentance", mc:null, mcNote:"brak oceny wersji PS5", oc:83, ocNote:"Repentance",
     portals:[["GamingTrend (Repentance+)","80/100","https://gamingtrend.com/reviews/the-binding-of-isaac-repentance-review/"],["PlayStation Universe","9/10","https://www.psu.com/reviews/the-binding-of-isaac-repentance-ps5-review/"],["Nintendo Life","8/10","https://www.nintendolife.com/reviews/nintendo-switch/the-binding-of-isaac-repentance"]],
-    lang:"Tylko angielski"
+    notes:[["Seba","Graliśmy w coś podobnego z Pawłem i nie było najgorsze, taki roguelite. Sporo negatywnych komentarzy, bo ludzie się wkurzyli, że muzyka była wygenerowana przez AI. Trochę wkurza cena, bo w amerykańskim PlayStation Store jest za $10, a w polskim za 200 zł."]], lang:"Tylko angielski"
   },
   {
     id:"toxic", name:"John Carpenter’s Toxic Commando",
@@ -172,7 +177,7 @@ const GAMES = [
     ceneo:"Pudełko od 97,99 zł",
     mcUrl:"https://www.metacritic.com/game/john-carpenters-toxic-commando/", ocUrl:"https://opencritic.com/game/19932/john-carpenters-toxic-commando", mc:74, mcNote:"PC", oc:73, ocNote:"56% poleca",
     portals:[["Eurogamer","3/5",null],["DualShockers","8/10","https://www.dualshockers.com/john-carpenters-toxic-commando-review/"],["Game Rant","8/10","https://gamerant.com/john-carpenters-toxic-commando-review/"]],
-    lang:"Polskie napisy"
+    notes:[["Seba","Taka rozwalanka z zombiakami. Ma nie najgorsze opinie. Mi się nawet podoba."]], lang:"Polskie napisy"
   },
   {
     id:"aliens", name:"Aliens: Fireteam Elite 2",
@@ -187,7 +192,7 @@ const GAMES = [
     ceneo:"Nie znalazłem oferty pudełkowej PS5",
     mcUrl:"https://www.metacritic.com/game/aliens-fireteam-elite-2/", ocUrl:"https://opencritic.com/game/21142/aliens-fireteam-elite-2", mc:null, mcNote:"brak zbiorczej oceny", oc:64, ocNote:"38% poleca",
     portals:[["IGN","7/10",null],["Push Square","4/10","https://www.pushsquare.com/reviews/ps5/aliens-fireteam-elite-2"],["GamingTrend","70/100","https://gamingtrend.com/reviews/aliens-fireteam-elite-2-review/"]],
-    lang:"Tylko angielski"
+    notes:[["Seba","Graliśmy w jedynkę z Pawłem i była całkiem spoko, fajny klimat z Obcego. Dwójka o dziwo ma gorsze recenzje niż jedynka, ale dwójka pozwala grać czterem graczom, a jedynka tylko trzem."]], lang:"Tylko angielski"
   },
   {
     id:"helldivers", name:"Helldivers 2",
@@ -207,7 +212,7 @@ const GAMES = [
     ceneo:"Pudełko od 79,89 zł",
     mcUrl:"https://www.metacritic.com/game/helldivers-2/", ocUrl:"https://opencritic.com/game/15908/helldivers-ii", mc:82, mcNote:"PS5", oc:83, ocNote:"90% poleca",
     portals:[["IGN","9/10",null],["GameSpot","9/10","https://www.gamespot.com/reviews/helldivers-2-review-starship-bloopers/1900-6418184/"],["Eurogamer","4/5",null]],
-    lang:"Polskie napisy"
+    notes:[["Seba","Na to był kiedyś spory hype i w sumie nawet to wtedy kupiłem. Całkiem fajna gra, da się grać tylko online. Robi się jakieś zadania na planecie, strzela się do obcych, nawet wciągające."]], lang:"Polskie napisy"
   },
   {
     id:"halo", name:"Halo: Campaign Evolved",
@@ -237,7 +242,7 @@ const GAMES = [
     ceneo:"Nie znalazłem oferty pudełkowej PS5",
     mcUrl:"https://www.metacritic.com/game/sea-of-thieves/", ocUrl:"https://opencritic.com/game/5412/sea-of-thieves", mc:81, mcNote:"PS5", oc:69, ocNote:"ocena z premiery w 2018",
     portals:[["Push Square","9/10","https://www.pushsquare.com/reviews/ps5/sea-of-thieves"]],
-    lang:"Polskie napisy"
+    notes:[["Seba","To wygląda dosyć ciekawie, tylko nie wiem, czy da się grać we 4, czy trzeba dołączyć do serwera z innymi graczami."]], lang:"Polskie napisy"
   },
   {
     id:"vermintide", name:"Warhammer: Vermintide 2",
@@ -252,7 +257,7 @@ const GAMES = [
     ceneo:"PS4 Deluxe od ok. 80–89 zł (pojedyncze oferty)",
     mcUrl:"https://www.metacritic.com/game/warhammer-vermintide-2/", ocUrl:"https://opencritic.com/game/5673/warhammer-vermintide-2", mc:81, mcNote:"PS4", oc:83, ocNote:"",
     portals:[],
-    lang:"Polskie napisy"
+    notes:[["Seba","Bardzo podobne do Darktide, w które graliśmy w zeszłym roku, i w sumie ma całkiem spoko opinie. Podoba mi się klimat średniowieczny, więc chętnie bym popykał."]], lang:"Polskie napisy"
   },
   {
     id:"dlbeast", name:"Dying Light: The Beast",
@@ -267,7 +272,7 @@ const GAMES = [
     ceneo:"Nie znalazłem oferty pudełkowej PS5 (klucze PC od ok. 108 zł)",
     mcUrl:"https://www.metacritic.com/game/dying-light-the-beast/", ocUrl:"https://opencritic.com/game/18724/dying-light-the-beast", mc:78, mcNote:"PS5", oc:82, ocNote:"",
     portals:[["IGN","7/10",null],["GameSpot","8/10","https://www.gamespot.com/reviews/dying-light-the-beast-review/1900-6418407/"],["GamesRadar+","4.5/5","https://www.gamesradar.com/games/survival-horror/dying-light-the-beast-review/"]],
-    lang:"Polskie napisy (dubbing PL w PS Store niewymieniony)"
+    notes:[["Seba","Parkour z zombiakami, a kampanię można przejść w coopie. Czego chcieć więcej?"]], lang:"Polskie napisy (dubbing PL w PS Store niewymieniony)"
   },
   {
     id:"diablo", name:"Diablo IV",
@@ -282,9 +287,12 @@ const GAMES = [
     ceneo:"Pudełko od ok. 199–250 zł",
     mcUrl:"https://www.metacritic.com/game/diablo-iv/", ocUrl:"https://opencritic.com/game/14353/diablo-iv", mc:86, mcNote:"PS5", oc:88, ocNote:"",
     portals:[["IGN","9/10",null],["GamesRadar+","5/5","https://www.gamesradar.com/diablo-4-review/"]],
-    lang:"Polski dubbing i napisy"
+    notes:[["Seba","Backup, jakby już w nic innego nie chciało nam się grać :P Akurat nowy sezon zaczyna się chyba na początku grudnia."]], lang:"Polski dubbing i napisy"
   }
 ];
+
+const ORDER = ["toxic","helldivers","dlbeast","sot","vermintide","aliens","halo","isaac","diablo"];
+GAMES.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
 /* ====== Render statyczny ====== */
 const el = (tag, attrs = {}, ...kids) => {
@@ -345,7 +353,11 @@ function gameCard(g){
         scoreChip("mc", "Metacritic", g.mc, g.mcNote, g.mcUrl),
         scoreChip("oc", "OpenCritic", g.oc, g.ocNote, g.ocUrl),
         ...g.portals.map(([s, v, u]) => scoreChip("", s, v, "", u || g.ocUrl + "/reviews"))
-      )
+      ),
+      g.notes && g.notes.length ? el("section", {class:"notes", "aria-label":`Komentarze: ${g.name}`},
+        el("h3", {text:"Komentarze"}),
+        ...g.notes.map(([who, txt]) => el("p", {class:"note"}, el("strong", {text:who + ": "}), document.createTextNode(txt)))
+      ) : null
     )
   );
 }
