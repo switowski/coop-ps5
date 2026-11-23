@@ -34,7 +34,7 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:
 .wrap{max-width:1040px;margin:0 auto;padding:24px 16px 64px;display:grid;gap:28px}
 header.top{display:grid;gap:12px}
 header.top h1{font-size:clamp(28px,5vw,44px);font-weight:800}
-header.top p{margin:0;color:var(--muted);max-width:65ch}
+header.top p{margin:0;color:var(--muted)}
 input[type=text],textarea,select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
 input[type=text]:focus,textarea:focus,select:focus,button:focus-visible,.vid:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);padding:8px 12px}
@@ -67,9 +67,9 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .vid .play span::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
 .vid iframe{width:100%;height:100%;border:0;display:block}
 .body{padding:16px 18px 18px;display:grid;gap:16px}
-.desc{margin:0;max-width:70ch}
+.desc{margin:0}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.fact{background:var(--panel-2);border-radius:10px;padding:10px 12px;display:grid;gap:4px;font-size:15px}
+.fact{background:var(--panel-2);border-radius:10px;padding:10px 12px;display:grid;gap:4px;align-content:start;font-size:15px}
 .fact b{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
 .fact .big{font-variant-numeric:tabular-nums;font-weight:700;font-size:18px}
 .fact .small{font-size:13px;color:var(--muted)}
@@ -80,6 +80,17 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .score.mc .v,.score.oc .v{font-size:18px}
 
 footer{color:var(--muted);font-size:13px;display:grid;gap:6px}
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(5,8,16,.94);display:grid;grid-template-rows:auto 1fr auto;padding:12px 16px}
+.lb[hidden]{display:none}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted);font-size:15px}
+.lb-stage{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;min-height:0}
+.lb-stage img{max-width:100%;max-height:calc(100vh - 140px);margin:auto;display:block;border-radius:8px;object-fit:contain}
+.lb button{font-size:22px;line-height:1;width:48px;height:48px;padding:0;border-radius:50%;background:var(--panel-2)}
+.lb-thumbs{display:flex;gap:8px;justify-content:center;padding-top:10px;overflow-x:auto}
+.lb-thumbs img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;opacity:.5;cursor:pointer;border:2px solid transparent}
+.lb-thumbs img.on{opacity:1;border-color:var(--accent)}
+@media (max-width:600px){.lb button{width:40px;height:40px;font-size:18px}.lb-stage{gap:6px}}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 </head>
@@ -114,6 +125,15 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:6px}
   </footer>
 </div>
 
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Galeria screenshotów">
+  <div class="lb-top"><span id="lb-cap"></span><button type="button" id="lb-close" aria-label="Zamknij (Esc)">✕</button></div>
+  <div class="lb-stage">
+    <button type="button" id="lb-prev" aria-label="Poprzedni (strzałka w lewo)">‹</button>
+    <img id="lb-img" alt="">
+    <button type="button" id="lb-next" aria-label="Następny (strzałka w prawo)">›</button>
+  </div>
+  <div class="lb-thumbs" id="lb-thumbs"></div>
+</div>
 <script>
 const SS = (app, hashes, nested) => hashes.map(h => {
   const base = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${app}/` + (nested ? `${h}/` : "") + `ss_${h}`;
@@ -295,7 +315,7 @@ function scoreChip(cls, label, val, note){
 
 function gameCard(g){
   const gallery = el("div", {class:"gallery", role:"list", "aria-label":`Screenshoty: ${g.name}`},
-    ...g.shots.map((s, i) => el("a", {href:s.full, target:"_blank", rel:"noopener", role:"listitem"},
+    ...g.shots.map((s, i) => el("a", {href:s.full, role:"listitem", "aria-label":`Powiększ screenshot ${i+1}`, onclick:e => { e.preventDefault(); openLb(g, i); }},
       el("img", {src:s.thumb, alt:`${g.name} – screenshot ${i+1}`, loading:"lazy", onerror:function(){ this.parentNode.remove(); }})))
   );
   return el("article", {class:"game", id:g.id, "data-id":g.id},
@@ -347,6 +367,39 @@ function applyFilters(){
 }
 document.getElementById("f-mode").addEventListener("change", applyFilters);
 document.getElementById("f-sort").addEventListener("change", applyFilters);
+
+/* ====== Lightbox ====== */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap"), lbThumbs = document.getElementById("lb-thumbs");
+let lbGame = null, lbIdx = 0, lbReturn = null;
+function showLb(i){
+  const n = lbGame.shots.length;
+  lbIdx = (i + n) % n;
+  lbImg.src = lbGame.shots[lbIdx].full;
+  lbImg.alt = `${lbGame.name} – screenshot ${lbIdx + 1}`;
+  lbCap.textContent = `${lbGame.name} · ${lbIdx + 1} / ${n}`;
+  [...lbThumbs.children].forEach((t, k) => t.classList.toggle("on", k === lbIdx));
+}
+function openLb(g, i){
+  lbGame = g; lbReturn = document.activeElement;
+  lbThumbs.replaceChildren(...g.shots.map((s, k) => el("img", {src:s.thumb, alt:`Miniatura ${k + 1}`, onclick:() => showLb(k)})));
+  lb.hidden = false; document.body.style.overflow = "hidden";
+  showLb(i);
+  document.getElementById("lb-close").focus();
+}
+function closeLb(){ lb.hidden = true; document.body.style.overflow = ""; lbImg.removeAttribute("src"); if (lbReturn) lbReturn.focus(); }
+document.getElementById("lb-prev").addEventListener("click", () => showLb(lbIdx - 1));
+document.getElementById("lb-next").addEventListener("click", () => showLb(lbIdx + 1));
+document.getElementById("lb-close").addEventListener("click", closeLb);
+lb.addEventListener("click", e => { if (e.target === lb || e.target.classList.contains("lb-stage")) closeLb(); });
+document.addEventListener("keydown", e => {
+  if (lb.hidden) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); showLb(lbIdx - 1); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); showLb(lbIdx + 1); }
+  else if (e.key === "Escape") closeLb();
+});
+let tx = null;
+lb.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) showLb(lbIdx + (dx < 0 ? 1 : -1)); tx = null; });
 
 applyFilters();
 </script>
