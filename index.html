@@ -42,9 +42,6 @@ button:hover{border-color:var(--accent)}
 button.primary{background:var(--accent);border-color:var(--accent);color:#06102a;font-weight:700}
 .legend{font-size:14px;color:var(--muted)}
 
-/* Filtry */
-.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.filters label{font-size:14px;color:var(--muted)}
 
 /* Karta gry */
 .game{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid}
@@ -108,22 +105,6 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:6px}
     <h1>Co-op na PS5 dla 4 graczy: w co gramy?</h1>
     <p>9 gier do wyboru. Przy każdej są screenshoty, trailer, gameplay, ceny, oceny i informacja, jak gra się we czwórkę. Przejrzyj je i daj znać na czacie, w co chcesz zagrać.</p>
   </header>
-
-  <section class="filters" aria-label="Filtry">
-    <label for="f-mode">Tryb:</label>
-    <select id="f-mode">
-      <option value="all">Wszystkie</option>
-      <option value="local">Da się grać na jednej konsoli</option>
-      <option value="online">Tylko online</option>
-    </select>
-    <label for="f-sort">Sortuj:</label>
-    <select id="f-sort">
-      <option value="list">Kolejność z listy</option>
-      <option value="oc">Ocena OpenCritic</option>
-      <option value="price">Cena w PS Store (od najtańszej)</option>
-      <option value="date">Data premiery (od najnowszej)</option>
-    </select>
-  </section>
 
   <main id="games" style="display:grid;gap:28px"></main>
 
@@ -366,23 +347,8 @@ const gamesEl = document.getElementById("games");
 const cards = new Map(GAMES.map(g => [g.id, gameCard(g)]));
 
 function applyFilters(){
-  const mode = document.getElementById("f-mode").value;
-  const sort = document.getElementById("f-sort").value;
-  let list = GAMES.filter(g => mode === "all" || (mode === "local" ? g.local : !g.local));
-  const sorters = {
-    list: null,
-    oc: (a, b) => (b.oc ?? -1) - (a.oc ?? -1),
-    price: (a, b) => a.psPrice - b.psPrice,
-    date: (a, b) => b.release.localeCompare(a.release)
-  };
-  if (sorters[sort]) list = [...list].sort(sorters[sort]);
-  /* Przestawiaj karty tylko gdy kolejność się zmieniła, żeby nie przerywać odtwarzanego filmu ani pisania komentarza. */
-  const want = list.map(g => g.id).join(",");
-  const have = [...gamesEl.children].map(c => c.dataset.id).join(",");
-  if (want !== have) gamesEl.replaceChildren(...list.map(g => cards.get(g.id)));
+  gamesEl.replaceChildren(...GAMES.map(g => cards.get(g.id)));
 }
-document.getElementById("f-mode").addEventListener("change", applyFilters);
-document.getElementById("f-sort").addEventListener("change", applyFilters);
 
 /* ====== Lightbox ====== */
 const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap"), lbThumbs = document.getElementById("lb-thumbs");
