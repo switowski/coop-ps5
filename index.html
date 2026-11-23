@@ -131,6 +131,21 @@ const SS = (app, hashes, nested) => hashes.map(h => {
 
 const GAMES = [
   {
+    id:"drg", name:"Deep Rock Galactic",
+    genre:["FPS","Co-op shooter","Sci-fi","Kopanie i eksploracja","Hordy przeciwników"],
+    release:"2022-01-04", releaseNote:"04.01.2022 (PS4/PS5; PC 2020)",
+    local:false, mode:"Online do 4 graczy (solo z robotem-pomocnikiem też się da)",
+    copies:"Każdy potrzebuje własnej kopii.",
+    desc:"Gracie krasnoludami-górnikami w kosmosie, których korporacja wysyła do jaskiń na wrogiej planecie Hoxxes IV. Każda misja to losowo generowany system jaskiń: kopiecie w całkowicie zniszczalnym terenie, wydobywacie surowce i odpieracie hordy obcych robali. Cztery klasy wyraźnie się uzupełniają: inżynier stawia platformy i wieżyczki, zwiadowca oświetla jaskinie, driller przekopuje skały, a gunner trzyma linię. Dużo humoru i stały rozwój postaci.",
+    shots:SS(548430,["49a57d16c55b74a6f835c590421d299d417af4f8","5ffa803484da48da16db9006d7f4313db8999c2a","cf8c347fac940f99a9a256730aca3cb647cb563f","9fad579c755e0c3ed249f581537da3c634d141bb"],true),
+    trailer:{id:"2_GV33zBf3A",t:"Launch Trailer PS5/PS4"}, gameplay:{id:"tDlczPrk9H4",t:"PS5 Gameplay (PlayStation Access)"},
+    psPrice:134, psText:"134,00 zł", psNote:"bez promocji",
+    ceneo:"Special Edition (pudełko PS5) od ok. 30–33 zł",
+    mcUrl:"https://www.metacritic.com/game/deep-rock-galactic/", ocUrl:"https://opencritic.com/game/9436/deep-rock-galactic", mc:85, mcNote:"PS5", oc:85, ocNote:"97% poleca",
+    portals:[["PC Gamer","79/100","https://www.pcgamer.com/deep-rock-galactic-review/"],["GamingBolt","8/10",null]],
+    notes:[["Seba","Ja to mam. Wygląda trochę cukierkowo, ale podoba mi się, więc ewentualnie zamiast Warhammera można by w to popykać."]], lang:"Polskie napisy"
+  },
+  {
     id:"isaac", name:"The Binding of Isaac: Repentance+",
     genre:["Roguelike","Twin-stick shooter","Dungeon crawler","2D"],
     release:"2026-11-19", releaseNote:"19.11.2026 (Repentance+ Online na PS5); Repentance na PS5: 04.11.2021",
@@ -272,7 +287,7 @@ const GAMES = [
   }
 ];
 
-const ORDER = ["toxic","helldivers","dlbeast","sot","vermintide","aliens","halo","isaac","diablo"];
+const ORDER = ["toxic","helldivers","drg","dlbeast","sot","vermintide","aliens","halo","isaac","diablo"];
 GAMES.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
 /* ====== Render statyczny ====== */
