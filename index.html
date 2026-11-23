@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Co-op na PS5 – wybieramy grę</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: wąska kolumna kart gier, ranking ekipy na górze, wszystko w jednym ciemnym "salonie przed konsolą". */
+  --bg:#0d1220;
+  --panel:#151c2e;
+  --panel-2:#1c2540;
+  --line:#2a3556;
+  --text:#e8ecf6;
+  --muted:#9aa5c2;
+  --accent:#4d8dff;
+  --love:#ffb020;
+  --want:#4d8dff;
+  --meh:#8a93ad;
+  --no:#ff5d6c;
+  --good:#3ccf8e;
+  --font-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 var(--font-body)}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 16px 64px;display:grid;gap:28px}
+header.top{display:grid;gap:12px}
+header.top h1{font-size:clamp(28px,5vw,44px);font-weight:800}
+header.top p{margin:0;color:var(--muted);max-width:65ch}
+input[type=text],textarea,select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+input[type=text]:focus,textarea:focus,select:focus,button:focus-visible,.vid:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);padding:8px 12px}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#06102a;font-weight:700}
+.legend{font-size:14px;color:var(--muted)}
+
+/* Filtry */
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filters label{font-size:14px;color:var(--muted)}
+
+/* Karta gry */
+.game{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid}
+.game-head{padding:18px 18px 12px;display:grid;gap:8px}
+.game-head h2{font-size:clamp(22px,3.5vw,30px);font-weight:800}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:13px;padding:2px 9px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
+.tag.mode-local{color:var(--good);border-color:#24664b}
+.tag.mode-online{color:#9fc0ff;border-color:#2e4c86}
+.gallery{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 18px 4px}
+.gallery a{flex:0 0 min(78%,360px);scroll-snap-align:start;min-width:0;border-radius:10px;overflow:hidden;background:var(--bg);aspect-ratio:16/9;display:block}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.videos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:14px 18px 0}
+.vid-box{display:grid;gap:6px}
+.vid-box .cap{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.vid{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;border:0;padding:0;width:100%}
+.vid img{width:100%;height:100%;object-fit:cover;opacity:.85;display:block}
+.vid .play{position:absolute;inset:0;display:grid;place-items:center}
+.vid .play span{width:64px;height:44px;border-radius:12px;background:rgba(255,0,0,.9);display:grid;place-items:center}
+.vid .play span::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.vid iframe{width:100%;height:100%;border:0;display:block}
+.body{padding:16px 18px 18px;display:grid;gap:16px}
+.desc{margin:0;max-width:70ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.fact{background:var(--panel-2);border-radius:10px;padding:10px 12px;display:grid;gap:4px;font-size:15px}
+.fact b{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.fact .big{font-variant-numeric:tabular-nums;font-weight:700;font-size:18px}
+.fact .small{font-size:13px;color:var(--muted)}
+.scores{display:flex;flex-wrap:wrap;gap:8px}
+.score{display:flex;align-items:baseline;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-variant-numeric:tabular-nums}
+.score .v{font-weight:700}
+.score .s{font-size:13px;color:var(--muted)}
+.score.mc .v,.score.oc .v{font-size:18px}
+
+footer{color:var(--muted);font-size:13px;display:grid;gap:6px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Co-op na PS5 dla 4 graczy: w co gramy?</h1>
+    <p>9 gier do wyboru. Przy każdej są screenshoty, trailer, gameplay, ceny, oceny i informacja, jak gra się we czwórkę. Przejrzyj je i daj znać na czacie, w co chcesz zagrać.</p>
+  </header>
+
+  <section class="filters" aria-label="Filtry">
+    <label for="f-mode">Tryb:</label>
+    <select id="f-mode">
+      <option value="all">Wszystkie</option>
+      <option value="local">Da się grać na jednej konsoli</option>
+      <option value="online">Tylko online</option>
+    </select>
+    <label for="f-sort">Sortuj:</label>
+    <select id="f-sort">
+      <option value="list">Kolejność z listy</option>
+      <option value="oc">Ocena OpenCritic</option>
+      <option value="price">Cena w PS Store (od najtańszej)</option>
+      <option value="date">Data premiery (od najnowszej)</option>
+    </select>
+  </section>
+
+  <main id="games" style="display:grid;gap:28px"></main>
+
+  <footer>
+    <div>Ceny i oceny sprawdzone 23.11.2026. Ceny PS Store dotyczą polskiego sklepu (wersja cyfrowa, edycja standardowa). Ceny z Ceneo to najtańsze oferty pudełkowe wg wyników wyszukiwania i mogą się szybko zmieniać.</div>
+    <div>Do gry online na PS5 każdy gracz potrzebuje PS Plus (co najmniej Essential).</div>
+  </footer>
+</div>
+
+<script>
+const SS = (app, hashes, nested) => hashes.map(h => {
+  const base = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${app}/` + (nested ? `${h}/` : "") + `ss_${h}`;
+  return { thumb: base + ".600x338.jpg", full: base + ".1920x1080.jpg" };
+});
+
+const GAMES = [
+  {
+    id:"isaac", name:"The Binding of Isaac: Repentance+",
+    genre:["Roguelike","Twin-stick shooter","Dungeon crawler","2D"],
+    release:"2026-11-19", releaseNote:"19.11.2026 (Repentance+ Online na PS5); Repentance na PS5: 04.11.2021",
+    local:true, mode:"Lokalnie do 4 graczy na jednej konsoli + online do 4 graczy (nowość na konsolach od 19.11.2026)",
+    copies:"Na jednej kanapie wystarczy jedna kopia. Online każdy potrzebuje własnej gry.",
+    desc:"Schodzicie do coraz głębszych, losowo generowanych piwnic, strzelacie łzami w potwory i zbieracie przedmioty, które dziwacznie zmieniają postać. Każda próba jest inna, a śmierć oznacza start od nowa. Paczka zawiera całą grę ze wszystkimi dodatkami. Repentance+ dodaje pełny co-op online dla czterech osób.",
+    shots:SS(3353470,["eabdea8983d3a139e150fe92a12071485d3a37ed","477617e340e8b600f9c0ec09e1283bd7da642bcb","487ff6f26bffeee3249f94dc5f36f595eded83d2","ee77d5f4c4be5dcea384bf1cd490961463388008"],false),
+    trailer:{id:"Fe2hQIWjOpo",t:"Console Launch Trailer"}, gameplay:{id:"j7yPmbNCP4I",t:"Repentance+ – trailer co-opu online"},
+    psPrice:269, psText:"269,00 zł", psNote:"+ dodatek Repentance+ 40,00 zł",
+    ceneo:"Brak wersji PS5 na Ceneo; PS4 (bez Repentance+) od 215 zł",
+    mc:null, mcNote:"brak oceny wersji PS5", oc:83, ocNote:"Repentance",
+    portals:[["GamingTrend (Repentance+)","80/100"],["PlayStation Universe","9/10"],["Nintendo Life","8/10"]],
+    lang:"Tylko angielski"
+  },
+  {
+    id:"toxic", name:"John Carpenter’s Toxic Commando",
+    genre:["FPS","Co-op shooter","Zombie","Hordy przeciwników","Pojazdy"],
+    release:"2026-03-12", releaseNote:"12.03.2026",
+    local:false, mode:"Online do 4 graczy (wymaga połączenia z internetem)",
+    copies:"Każdy potrzebuje własnej kopii.",
+    desc:"Strzelanka w stylu Left 4 Dead z klimatem horrorów i kina akcji z lat 80. Czterech najemników jeździ terenówkami po półotwartych mapach, kosi ogromne hordy zombie i walczy z bossami. Do wyboru są klasy z umiejętnościami i drzewkami rozwoju. Recenzenci chwalą zabawę w czwórkę i krytykują skromną ilość treści.",
+    shots:SS(2157830,["ab406a783ca5cc723e3b420a5dd98ed9320dc5f1","e2ecef3a17c708fdb72d7c71754692d9bfe9153c","56768965feef33b2dc703882be043460e1aa6858","32346fba561025627611a5b2d8be6f17b7c148a5"],true),
+    trailer:{id:"eknbu0SKGzI",t:"Official Gameplay Trailer (gamescom 2025)"}, gameplay:{id:"I4Ea7bMBNGQ",t:"Gameplay Overview Trailer"},
+    psPrice:84.5, psText:"84,50 zł", psNote:"promocja −50% do 30.11 (regularnie 169,00 zł)",
+    ceneo:"Pudełko od 97,99 zł",
+    mc:74, mcNote:"PC", oc:73, ocNote:"56% poleca",
+    portals:[["Eurogamer","3/5"],["DualShockers","8/10"],["Game Rant","8/10"]],
+    lang:"Polskie napisy"
+  },
+  {
+    id:"aliens", name:"Aliens: Fireteam Elite 2",
+    genre:["TPS","Co-op shooter","Sci-fi horror","Hordy przeciwników","Klasy postaci"],
+    release:"2026-08-25", releaseNote:"25.08.2026",
+    local:false, mode:"Online do 4 graczy (solo z botami też się da)",
+    copies:"Każdy potrzebuje własnej kopii.",
+    desc:"Czwórka Kolonialnych Marines walczy z falami ksenomorfów i syntetyków w świecie filmów Obcy. Kampania ma 15 misji po 20–30 minut, do tego tryb hordy. Klasy, w tym nowy Specjalista, można rozbudowywać systemem perków. Recenzje są mieszane: dobra zabawa w krótkich sesjach ze znajomymi, ale mało nowości względem jedynki i sporo błędów.",
+    shots:SS(3448650,["48e10e0c714479155fd3de7916fb70d666599bac","d94d91fc046687b02ec98e03176b6b881706bf1f","dabe4c3f28114786f14a443cd38585d732ea857f","17ebf7c36f98ef79b18d2e158c78937d4beffb43"],true),
+    trailer:{id:"zjQaSsZJm54",t:"Launch Trailer"}, gameplay:{id:"k1CiInaOQZ8",t:"Co-Op Showcase Trailer"},
+    psPrice:219, psText:"219,00 zł", psNote:"bez promocji",
+    ceneo:"Nie znalazłem oferty pudełkowej PS5",
+    mc:null, mcNote:"brak zbiorczej oceny", oc:64, ocNote:"38% poleca",
+    portals:[["IGN","7/10"],["Push Square","4/10"],["GamingTrend","70/100"]],
+    lang:"Tylko angielski"
+  },
+  {
+    id:"helldivers", name:"Helldivers 2",
+    genre:["TPS","Co-op shooter","Taktyczna","Live service","Humor"],
+    release:"2024-02-08", releaseNote:"08.02.2024",
+    local:false, mode:"Online do 4 graczy (wymaga połączenia z internetem), cross-play z PC i Xbox",
+    copies:"Każdy potrzebuje własnej kopii albo PS Plus Extra (gra jest w katalogu).",
+    desc:"Elitarni żołnierze Super Ziemi lądują na obcych planetach i wykonują misje przeciw robalom, robotom i kosmitom. Wsparcie, czyli nalot, działo albo mecha, wzywacie kombinacjami przycisków. Ogień sojuszniczy jest zawsze włączony, więc chaos i śmiech gwarantowane. Wspólna galaktyczna wojna toczy się ze wszystkimi graczami i ciągle dostaje nową zawartość.",
+    shots:[
+      {thumb:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/aed08979e15f54798f287dd8820fb5838476b5fa/ss_aed08979e15f54798f287dd8820fb5838476b5fa.600x338.jpg",full:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/aed08979e15f54798f287dd8820fb5838476b5fa/ss_aed08979e15f54798f287dd8820fb5838476b5fa.1920x1080.jpg"},
+      {thumb:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/71ef7c65fcf63ff974ce42150190c0420c66c72b/ss_71ef7c65fcf63ff974ce42150190c0420c66c72b.600x338.jpg",full:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/71ef7c65fcf63ff974ce42150190c0420c66c72b/ss_71ef7c65fcf63ff974ce42150190c0420c66c72b.1920x1080.jpg"},
+      {thumb:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/6c8b61a7c63479b6f526d285af6687a362d5d7ae/ss_6c8b61a7c63479b6f526d285af6687a362d5d7ae.600x338.jpg",full:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/6c8b61a7c63479b6f526d285af6687a362d5d7ae/ss_6c8b61a7c63479b6f526d285af6687a362d5d7ae.1920x1080.jpg"},
+      {thumb:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/ss_0c79f56fc7be1bd0102f2ca1c92c8f0900daf4fb.600x338.jpg",full:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/ss_0c79f56fc7be1bd0102f2ca1c92c8f0900daf4fb.1920x1080.jpg"}
+    ],
+    trailer:{id:"gJPup_6AJPc",t:"Launch Trailer „The Fight for Freedom Begins”"}, gameplay:{id:"wPU4amA6RYk",t:"Gameplay Trailer"},
+    psPrice:126.75, psText:"126,75 zł", psNote:"promocja −25% do 30.11 (regularnie 169,00 zł); w PS Plus Extra",
+    ceneo:"Pudełko od 79,89 zł",
+    mc:82, mcNote:"PS5", oc:83, ocNote:"90% poleca",
+    portals:[["IGN","9/10"],["GameSpot","9/10"],["Eurogamer","4/5"]],
+    lang:"Polskie napisy"
+  },
+  {
+    id:"halo", name:"Halo: Campaign Evolved",
+    genre:["FPS","Kampania fabularna","Sci-fi","Remake"],
+    release:"2026-07-28", releaseNote:"28.07.2026",
+    local:true, mode:"Online do 4 graczy (cross-play z PC i Xbox) + split-screen dla 2 osób na jednej konsoli",
+    copies:"We dwóch na jednej konsoli wystarczy jedna kopia. Online we czwórkę każdy potrzebuje własnej.",
+    desc:"Remake kampanii pierwszego Halo na Unreal Engine 5. Master Chief ląduje na tajemniczym pierścieniu i walczy z Przymierzem, a potem z Floodem. Gra dodaje trzy nowe misje fabularne, nowe pojazdy i bronie, czaszki modyfikujące rozgrywkę oraz po raz pierwszy co-op dla czterech osób. Nie ma trybu multiplayer PvP. Część recenzji zgłasza problemy z wydajnością na PS5.",
+    shots:SS(2806050,["4288a35884445fcf22f4fe7315944c376ecb1cf5","e3a3facf1d3f02fc13ef6e95a40cf1fad52a9087","8a7b831ea8a306b1f13321f027c1410ac378941b","a05dce36b81730fcd2a4ddd4a1106cfcc74dbf0b"],true),
+    trailer:{id:"lO3UiiKjG2g",t:"Official Launch Trailer"}, gameplay:{id:"HhsxGagHirw",t:"„New Missions” Gameplay Trailer"},
+    psPrice:249, psText:"249,00 zł", psNote:"bez promocji",
+    ceneo:"Pudełko od ok. 183 zł",
+    mc:80, mcNote:"PS5", oc:83, ocNote:"89% poleca",
+    portals:[["TheGamer","4/5"],["GamesRadar+","3.5/5"],["DualShockers","6.5/10"]],
+    lang:"Polskie napisy"
+  },
+  {
+    id:"sot", name:"Sea of Thieves",
+    genre:["Przygodowa","Sandbox","Piraci","Otwarty świat","PvPvE"],
+    release:"2024-04-30", releaseNote:"30.04.2024 na PS5 (premiera na Xbox/PC: 2018)",
+    local:false, mode:"Online (wymaga połączenia), załoga do 4 osób na galeonie, wspólny świat z innymi graczami",
+    copies:"Każdy potrzebuje własnej kopii.",
+    desc:"Jesteście załogą jednego statku: ktoś steruje, ktoś stawia żagle, ktoś łata dziury i wylewa wodę. Szukacie skarbów według map, walczycie ze szkieletami i krakenem, a na morzu spotykacie innych graczy, którzy mogą was zaatakować i ograbić. Nie ma tu ścisłego celu, liczą się historie, które wydarzają się po drodze. Najlepiej sprawdza się z dobrą ekipą na czacie głosowym.",
+    shots:SS(1172620,["ec623c77d75dfa098c622b547b1ab21ad4cae0a8","6ea04bdc415c336a195555aec4b97a73a9910fc1","2144ac860fd64d82cb9cc49680f5087c7bb8fe2f","4fb90cbac34d2cbe74b86383bda660cd0316b907"],false),
+    trailer:{id:"RK8cib4YD5Q",t:"2026 Edition Launch Trailer"}, gameplay:{id:"Q7x4MmxpUGk",t:"PS5 Features Overview Trailer"},
+    psPrice:179, psText:"179,00 zł", psNote:"bez promocji",
+    ceneo:"Nie znalazłem oferty pudełkowej PS5",
+    mc:81, mcNote:"PS5", oc:69, ocNote:"ocena z premiery w 2018",
+    portals:[["Push Square","9/10"]],
+    lang:"Polskie napisy"
+  },
+  {
+    id:"vermintide", name:"Warhammer: Vermintide 2",
+    genre:["FPP","Walka wręcz","Co-op","Fantasy","Hordy przeciwników"],
+    release:"2018-12-17", releaseNote:"17.12.2018 (wersja PS4, działa na PS5)",
+    local:false, mode:"Online do 4 graczy (brakujące miejsca zajmują boty)",
+    copies:"Każdy potrzebuje własnej kopii albo PS Plus Extra (gra jest w katalogu).",
+    desc:"Pięciu bohaterów ze świata Warhammera przebija się przez hordy szczuroludzi i wojowników Chaosu. To Left 4 Dead w wersji fantasy, ale z naciskiem na mięsistą walkę wręcz: miecze, topory, młoty, uzupełniane łukami, kuszami i magią. Każdy bohater ma kilka karier z drzewkami talentów, a po misjach wpada lepszy sprzęt. Gra ma dużo darmowych map i tryb roguelike Chaos Wastes.",
+    shots:SS(552500,["6b459fcf2c685275b0963d056113a23b538d1bdf","39dc495d3db6f8734550447ab3f22a1ef032aba1","82f6e4be1711f1fcd5e6c15687df03a9d96d8f32","70bcfe361ea570b0617f0bf0d2604124f9a263e5"],false),
+    trailer:{id:"JTlpd3O6-gE",t:"Release Trailer"}, gameplay:{id:"YpT9oAM6M0U",t:"Gameplay Trailer"},
+    psPrice:134, psText:"134,00 zł", psNote:"w PS Plus Extra",
+    ceneo:"PS4 Deluxe od ok. 80–89 zł (pojedyncze oferty)",
+    mc:81, mcNote:"PS4", oc:83, ocNote:"",
+    portals:[],
+    lang:"Polskie napisy"
+  },
+  {
+    id:"dlbeast", name:"Dying Light: The Beast",
+    genre:["FPP","Zombie","Parkour","Otwarty świat","Survival horror"],
+    release:"2025-09-18", releaseNote:"18.09.2025",
+    local:false, mode:"Online do 4 graczy, cała kampania w co-opie",
+    copies:"Każdy potrzebuje własnej kopii.",
+    desc:"Kyle Crane z pierwszego Dying Light wraca po latach eksperymentów i szuka zemsty w alpejskiej dolinie Castor Woods. W dzień biegacie po dachach i walczycie bronią białą, w nocy uciekacie przed groźnymi zarażonymi. Nowość to Tryb Bestii, w którym bohater na chwilę staje się potworem. Całą fabułę przechodzi się w czwórkę. To gra polskiego studia Techland.",
+    shots:SS(3008130,["26ac72d16d3bdec63948f769f34446feba126cb9","664fb0500ab6dfeb8378e90ae45ddcfc86a9d53b","50a84a957ec4fcd627c75692fb50123bb6d799b3","a470b06ba2d33e31f50f075efe3fabed1756ce70"],true),
+    trailer:{id:"3EMvRfPmc4Y",t:"Trailer Castor Woods"}, gameplay:{id:"M0GCr2P9510",t:"Gameplay Premiere Trailer (SGF 2025)"},
+    psPrice:159.5, psText:"159,50 zł", psNote:"promocja −50% do 30.11 (regularnie 319,00 zł; z PS Plus 143,55 zł)",
+    ceneo:"Nie znalazłem oferty pudełkowej PS5 (klucze PC od ok. 108 zł)",
+    mc:78, mcNote:"PS5", oc:82, ocNote:"",
+    portals:[["IGN","7/10"],["GameSpot","8/10"],["GamesRadar+","4.5/5"]],
+    lang:"Polskie napisy (dubbing PL w PS Store niewymieniony)"
+  },
+  {
+    id:"diablo", name:"Diablo IV",
+    genre:["Action RPG","Hack and slash","Loot","Dark fantasy","Live service"],
+    release:"2023-06-06", releaseNote:"06.06.2023",
+    local:true, mode:"Online do 4 graczy (wymaga połączenia) + co-op na kanapie dla 2 osób",
+    copies:"We dwóch na jednej konsoli wystarczy jedna kopia. Online we czwórkę każdy potrzebuje własnej.",
+    desc:"Klasyczny hack and slash z widokiem z góry. Wybieracie klasę, siekacie demony w otwartym świecie Sanktuarium, przechodzicie lochy i zbieracie coraz lepszy łup. Po fabule zaczyna się endgame z sezonami i coraz trudniejszymi wyzwaniami. Dodatki Vessel of Hatred i Lord of Hatred są płatne osobno.",
+    shots:SS(2344520,["8512b560be0ddef49cb0da366b7d2ddf5df18cab","24952fc1c8779c9a7a555c01489c76f9814f70a7","7eda1d661ffde2750d56517e1a46406f340675e5","38d64c37bf2e84bbec5138cf114529eada712ebc"],true),
+    trailer:{id:"tkzbNhdsQ_Y",t:"Story Launch Trailer"}, gameplay:{id:"OGrAgrWvODg",t:"Gameplay Launch Trailer"},
+    psPrice:215.5, psText:"215,50 zł", psNote:"gra podstawowa; pakiet z oboma dodatkami 309,00 zł",
+    ceneo:"Pudełko od ok. 199–250 zł",
+    mc:86, mcNote:"PS5", oc:88, ocNote:"",
+    portals:[],
+    lang:"Polski dubbing i napisy"
+  }
+];
+
+/* ====== Render statyczny ====== */
+const el = (tag, attrs = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v; else if (k === "text") n.textContent = v; else if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v);
+  }
+  for (const k of kids) if (k != null) n.append(k);
+  return n;
+};
+const fmtDate = iso => new Date(iso).toLocaleDateString("pl-PL", {day:"2-digit", month:"2-digit", year:"numeric"});
+
+function videoBox(v, caption){
+  const btn = el("button", {class:"vid", type:"button", "aria-label":`Odtwórz: ${caption} – ${v.t}`},
+    el("img", {src:`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`, alt:"", loading:"lazy"}),
+    el("span", {class:"play"}, el("span"))
+  );
+  btn.addEventListener("click", () => {
+    const f = el("iframe", {src:`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`, title:`${caption}: ${v.t}`, allow:"autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen:""});
+    btn.replaceWith(el("div", {class:"vid"}, f));
+  });
+  return el("div", {class:"vid-box"},
+    btn,
+    el("div", {class:"cap"}, el("span", {text:`${caption}: ${v.t}`}), el("a", {href:`https://www.youtube.com/watch?v=${v.id}`, target:"_blank", rel:"noopener", text:"YouTube ↗"}))
+  );
+}
+
+function scoreChip(cls, label, val, note){
+  return el("span", {class:"score " + cls}, el("span", {class:"s", text:label}), el("span", {class:"v", text: val == null ? "–" : String(val)}), note ? el("span", {class:"s", text:note}) : null);
+}
+
+function gameCard(g){
+  const gallery = el("div", {class:"gallery", role:"list", "aria-label":`Screenshoty: ${g.name}`},
+    ...g.shots.map((s, i) => el("a", {href:s.full, target:"_blank", rel:"noopener", role:"listitem"},
+      el("img", {src:s.thumb, alt:`${g.name} – screenshot ${i+1}`, loading:"lazy", onerror:function(){ this.parentNode.remove(); }})))
+  );
+  return el("article", {class:"game", id:g.id, "data-id":g.id},
+    el("div", {class:"game-head"},
+      el("h2", {text:g.name}),
+      el("div", {class:"tags"},
+        el("span", {class:"tag " + (g.local ? "mode-local" : "mode-online"), text: g.local ? "Także na jednej konsoli" : "Tylko online"}),
+        ...g.genre.map(t => el("span", {class:"tag", text:t})))
+    ),
+    gallery,
+    el("div", {class:"videos"}, videoBox(g.trailer, "Trailer"), videoBox(g.gameplay, "Gameplay")),
+    el("div", {class:"body"},
+      el("p", {class:"desc", text:g.desc}),
+      el("div", {class:"facts"},
+        el("div", {class:"fact"}, el("b", {text:"Premiera"}), el("span", {text:g.releaseNote})),
+        el("div", {class:"fact"}, el("b", {text:"Tryb gry"}), el("span", {text:g.mode})),
+        el("div", {class:"fact"}, el("b", {text:"Ile kopii"}), el("span", {text:g.copies})),
+        el("div", {class:"fact"}, el("b", {text:"Język"}), el("span", {text:g.lang})),
+        el("div", {class:"fact"}, el("b", {text:"PS Store (PL)"}), el("span", {class:"big", text:g.psText}), el("span", {class:"small", text:g.psNote})),
+        el("div", {class:"fact"}, el("b", {text:"Ceneo"}), el("span", {text:g.ceneo}))
+      ),
+      el("div", {class:"scores"},
+        scoreChip("mc", "Metacritic", g.mc, g.mcNote),
+        scoreChip("oc", "OpenCritic", g.oc, g.ocNote),
+        ...g.portals.map(([s, v]) => scoreChip("", s, v, ""))
+      )
+    )
+  );
+}
+
+const gamesEl = document.getElementById("games");
+const cards = new Map(GAMES.map(g => [g.id, gameCard(g)]));
+
+function applyFilters(){
+  const mode = document.getElementById("f-mode").value;
+  const sort = document.getElementById("f-sort").value;
+  let list = GAMES.filter(g => mode === "all" || (mode === "local" ? g.local : !g.local));
+  const sorters = {
+    list: null,
+    oc: (a, b) => (b.oc ?? -1) - (a.oc ?? -1),
+    price: (a, b) => a.psPrice - b.psPrice,
+    date: (a, b) => b.release.localeCompare(a.release)
+  };
+  if (sorters[sort]) list = [...list].sort(sorters[sort]);
+  /* Przestawiaj karty tylko gdy kolejność się zmieniła, żeby nie przerywać odtwarzanego filmu ani pisania komentarza. */
+  const want = list.map(g => g.id).join(",");
+  const have = [...gamesEl.children].map(c => c.dataset.id).join(",");
+  if (want !== have) gamesEl.replaceChildren(...list.map(g => cards.get(g.id)));
+}
+document.getElementById("f-mode").addEventListener("change", applyFilters);
+document.getElementById("f-sort").addEventListener("change", applyFilters);
+
+applyFilters();
+</script>
+</body>
+</html>
