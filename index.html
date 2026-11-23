@@ -76,6 +76,9 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#06102a
 .scores{display:flex;flex-wrap:wrap;gap:8px}
 .score{display:flex;align-items:baseline;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-variant-numeric:tabular-nums}
 .score .v{font-weight:700}
+a.score{color:var(--text);text-decoration:none}
+a.score:hover{border-color:var(--accent)}
+a.score:hover .ext{color:var(--accent)}
 .score .s{font-size:13px;color:var(--muted)}
 .score.mc .v,.score.oc .v{font-size:18px}
 
@@ -152,8 +155,8 @@ const GAMES = [
     trailer:{id:"Fe2hQIWjOpo",t:"Console Launch Trailer"}, gameplay:{id:"j7yPmbNCP4I",t:"Repentance+ – trailer co-opu online"},
     psPrice:269, psText:"269,00 zł", psNote:"+ dodatek Repentance+ 40,00 zł",
     ceneo:"Brak wersji PS5 na Ceneo; PS4 (bez Repentance+) od 215 zł",
-    mc:null, mcNote:"brak oceny wersji PS5", oc:83, ocNote:"Repentance",
-    portals:[["GamingTrend (Repentance+)","80/100"],["PlayStation Universe","9/10"],["Nintendo Life","8/10"]],
+    mcUrl:"https://www.metacritic.com/game/the-binding-of-isaac-repentance/", ocUrl:"https://opencritic.com/game/11065/the-binding-of-isaac-repentance", mc:null, mcNote:"brak oceny wersji PS5", oc:83, ocNote:"Repentance",
+    portals:[["GamingTrend (Repentance+)","80/100","https://gamingtrend.com/reviews/the-binding-of-isaac-repentance-review/"],["PlayStation Universe","9/10","https://www.psu.com/reviews/the-binding-of-isaac-repentance-ps5-review/"],["Nintendo Life","8/10","https://www.nintendolife.com/reviews/nintendo-switch/the-binding-of-isaac-repentance"]],
     lang:"Tylko angielski"
   },
   {
@@ -167,8 +170,8 @@ const GAMES = [
     trailer:{id:"eknbu0SKGzI",t:"Official Gameplay Trailer (gamescom 2025)"}, gameplay:{id:"I4Ea7bMBNGQ",t:"Gameplay Overview Trailer"},
     psPrice:84.5, psText:"84,50 zł", psNote:"promocja −50% do 30.11 (regularnie 169,00 zł)",
     ceneo:"Pudełko od 97,99 zł",
-    mc:74, mcNote:"PC", oc:73, ocNote:"56% poleca",
-    portals:[["Eurogamer","3/5"],["DualShockers","8/10"],["Game Rant","8/10"]],
+    mcUrl:"https://www.metacritic.com/game/john-carpenters-toxic-commando/", ocUrl:"https://opencritic.com/game/19932/john-carpenters-toxic-commando", mc:74, mcNote:"PC", oc:73, ocNote:"56% poleca",
+    portals:[["Eurogamer","3/5",null],["DualShockers","8/10","https://www.dualshockers.com/john-carpenters-toxic-commando-review/"],["Game Rant","8/10","https://gamerant.com/john-carpenters-toxic-commando-review/"]],
     lang:"Polskie napisy"
   },
   {
@@ -182,8 +185,8 @@ const GAMES = [
     trailer:{id:"zjQaSsZJm54",t:"Launch Trailer"}, gameplay:{id:"k1CiInaOQZ8",t:"Co-Op Showcase Trailer"},
     psPrice:219, psText:"219,00 zł", psNote:"bez promocji",
     ceneo:"Nie znalazłem oferty pudełkowej PS5",
-    mc:null, mcNote:"brak zbiorczej oceny", oc:64, ocNote:"38% poleca",
-    portals:[["IGN","7/10"],["Push Square","4/10"],["GamingTrend","70/100"]],
+    mcUrl:"https://www.metacritic.com/game/aliens-fireteam-elite-2/", ocUrl:"https://opencritic.com/game/21142/aliens-fireteam-elite-2", mc:null, mcNote:"brak zbiorczej oceny", oc:64, ocNote:"38% poleca",
+    portals:[["IGN","7/10",null],["Push Square","4/10","https://www.pushsquare.com/reviews/ps5/aliens-fireteam-elite-2"],["GamingTrend","70/100","https://gamingtrend.com/reviews/aliens-fireteam-elite-2-review/"]],
     lang:"Tylko angielski"
   },
   {
@@ -202,8 +205,8 @@ const GAMES = [
     trailer:{id:"gJPup_6AJPc",t:"Launch Trailer „The Fight for Freedom Begins”"}, gameplay:{id:"wPU4amA6RYk",t:"Gameplay Trailer"},
     psPrice:126.75, psText:"126,75 zł", psNote:"promocja −25% do 30.11 (regularnie 169,00 zł); w PS Plus Extra",
     ceneo:"Pudełko od 79,89 zł",
-    mc:82, mcNote:"PS5", oc:83, ocNote:"90% poleca",
-    portals:[["IGN","9/10"],["GameSpot","9/10"],["Eurogamer","4/5"]],
+    mcUrl:"https://www.metacritic.com/game/helldivers-2/", ocUrl:"https://opencritic.com/game/15908/helldivers-ii", mc:82, mcNote:"PS5", oc:83, ocNote:"90% poleca",
+    portals:[["IGN","9/10",null],["GameSpot","9/10","https://www.gamespot.com/reviews/helldivers-2-review-starship-bloopers/1900-6418184/"],["Eurogamer","4/5",null]],
     lang:"Polskie napisy"
   },
   {
@@ -217,8 +220,8 @@ const GAMES = [
     trailer:{id:"lO3UiiKjG2g",t:"Official Launch Trailer"}, gameplay:{id:"HhsxGagHirw",t:"„New Missions” Gameplay Trailer"},
     psPrice:249, psText:"249,00 zł", psNote:"bez promocji",
     ceneo:"Pudełko od ok. 183 zł",
-    mc:80, mcNote:"PS5", oc:83, ocNote:"89% poleca",
-    portals:[["TheGamer","4/5"],["GamesRadar+","3.5/5"],["DualShockers","6.5/10"]],
+    mcUrl:"https://www.metacritic.com/game/halo-campaign-evolved/", ocUrl:"https://opencritic.com/game/20799/halo-campaign-evolved", mc:80, mcNote:"PS5", oc:83, ocNote:"89% poleca",
+    portals:[["TheGamer","4/5","https://www.thegamer.com/halo-campaign-evolved-review/"],["GamesRadar+","3.5/5","https://www.gamesradar.com/games/halo/halo-campaign-evolved-review/"],["DualShockers","6.5/10","https://www.dualshockers.com/halo-campaign-evolved-review/"]],
     lang:"Polskie napisy"
   },
   {
@@ -232,8 +235,8 @@ const GAMES = [
     trailer:{id:"RK8cib4YD5Q",t:"2026 Edition Launch Trailer"}, gameplay:{id:"Q7x4MmxpUGk",t:"PS5 Features Overview Trailer"},
     psPrice:179, psText:"179,00 zł", psNote:"bez promocji",
     ceneo:"Nie znalazłem oferty pudełkowej PS5",
-    mc:81, mcNote:"PS5", oc:69, ocNote:"ocena z premiery w 2018",
-    portals:[["Push Square","9/10"]],
+    mcUrl:"https://www.metacritic.com/game/sea-of-thieves/", ocUrl:"https://opencritic.com/game/5412/sea-of-thieves", mc:81, mcNote:"PS5", oc:69, ocNote:"ocena z premiery w 2018",
+    portals:[["Push Square","9/10","https://www.pushsquare.com/reviews/ps5/sea-of-thieves"]],
     lang:"Polskie napisy"
   },
   {
@@ -247,7 +250,7 @@ const GAMES = [
     trailer:{id:"JTlpd3O6-gE",t:"Release Trailer"}, gameplay:{id:"YpT9oAM6M0U",t:"Gameplay Trailer"},
     psPrice:134, psText:"134,00 zł", psNote:"w PS Plus Extra",
     ceneo:"PS4 Deluxe od ok. 80–89 zł (pojedyncze oferty)",
-    mc:81, mcNote:"PS4", oc:83, ocNote:"",
+    mcUrl:"https://www.metacritic.com/game/warhammer-vermintide-2/", ocUrl:"https://opencritic.com/game/5673/warhammer-vermintide-2", mc:81, mcNote:"PS4", oc:83, ocNote:"",
     portals:[],
     lang:"Polskie napisy"
   },
@@ -262,8 +265,8 @@ const GAMES = [
     trailer:{id:"3EMvRfPmc4Y",t:"Trailer Castor Woods"}, gameplay:{id:"M0GCr2P9510",t:"Gameplay Premiere Trailer (SGF 2025)"},
     psPrice:159.5, psText:"159,50 zł", psNote:"promocja −50% do 30.11 (regularnie 319,00 zł; z PS Plus 143,55 zł)",
     ceneo:"Nie znalazłem oferty pudełkowej PS5 (klucze PC od ok. 108 zł)",
-    mc:78, mcNote:"PS5", oc:82, ocNote:"",
-    portals:[["IGN","7/10"],["GameSpot","8/10"],["GamesRadar+","4.5/5"]],
+    mcUrl:"https://www.metacritic.com/game/dying-light-the-beast/", ocUrl:"https://opencritic.com/game/18724/dying-light-the-beast", mc:78, mcNote:"PS5", oc:82, ocNote:"",
+    portals:[["IGN","7/10",null],["GameSpot","8/10","https://www.gamespot.com/reviews/dying-light-the-beast-review/1900-6418407/"],["GamesRadar+","4.5/5","https://www.gamesradar.com/games/survival-horror/dying-light-the-beast-review/"]],
     lang:"Polskie napisy (dubbing PL w PS Store niewymieniony)"
   },
   {
@@ -277,8 +280,8 @@ const GAMES = [
     trailer:{id:"tkzbNhdsQ_Y",t:"Story Launch Trailer"}, gameplay:{id:"OGrAgrWvODg",t:"Gameplay Launch Trailer"},
     psPrice:215.5, psText:"215,50 zł", psNote:"gra podstawowa; pakiet z oboma dodatkami 309,00 zł",
     ceneo:"Pudełko od ok. 199–250 zł",
-    mc:86, mcNote:"PS5", oc:88, ocNote:"",
-    portals:[],
+    mcUrl:"https://www.metacritic.com/game/diablo-iv/", ocUrl:"https://opencritic.com/game/14353/diablo-iv", mc:86, mcNote:"PS5", oc:88, ocNote:"",
+    portals:[["IGN","9/10",null],["GamesRadar+","5/5","https://www.gamesradar.com/diablo-4-review/"]],
     lang:"Polski dubbing i napisy"
   }
 ];
@@ -309,8 +312,9 @@ function videoBox(v, caption){
   );
 }
 
-function scoreChip(cls, label, val, note){
-  return el("span", {class:"score " + cls}, el("span", {class:"s", text:label}), el("span", {class:"v", text: val == null ? "–" : String(val)}), note ? el("span", {class:"s", text:note}) : null);
+function scoreChip(cls, label, val, note, url){
+  const kids = [el("span", {class:"s", text:label}), el("span", {class:"v", text: val == null ? "–" : String(val)}), note ? el("span", {class:"s", text:note}) : null, el("span", {class:"s ext", text:"↗"})];
+  return el("a", {class:"score " + cls, href:url, target:"_blank", rel:"noopener", title:`${label}: otwórz w nowej karcie`}, ...kids);
 }
 
 function gameCard(g){
@@ -338,9 +342,9 @@ function gameCard(g){
         el("div", {class:"fact"}, el("b", {text:"Ceneo"}), el("span", {text:g.ceneo}))
       ),
       el("div", {class:"scores"},
-        scoreChip("mc", "Metacritic", g.mc, g.mcNote),
-        scoreChip("oc", "OpenCritic", g.oc, g.ocNote),
-        ...g.portals.map(([s, v]) => scoreChip("", s, v, ""))
+        scoreChip("mc", "Metacritic", g.mc, g.mcNote, g.mcUrl),
+        scoreChip("oc", "OpenCritic", g.oc, g.ocNote, g.ocUrl),
+        ...g.portals.map(([s, v, u]) => scoreChip("", s, v, "", u || g.ocUrl + "/reviews"))
       )
     )
   );
